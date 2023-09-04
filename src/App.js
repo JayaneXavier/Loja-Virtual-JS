@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import axios from 'axios'
+import {useEffect,useState} from 'react';
 import './App.css';
+import Card from './Card';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+  const [produtos, setProdutos] = useState([])
+
+  useEffect (() => {
+    axios.get(`https://fakestoreapi.com/products`)
+    .then((resposta) => {
+      setProdutos(resposta.data);
+    });
+  },[]);
+
+    return (
+        <div className='row'>
+              {produtos.map((produto) => {
+                return <div className='col-sm-3'>
+                <Card
+                  titulo={produto.title}
+                  imagem={produto.image}
+                  preco={produto.body}
+                />    
+                </div>    
+              })}
+          </div>
+
   );
+  
 }
 
 export default App;
